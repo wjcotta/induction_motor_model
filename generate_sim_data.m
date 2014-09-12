@@ -19,3 +19,5 @@ save('sim_data', 'data')
 
 % Save dq0 currents for debugging.
 save('sim_idq', 'idq')
+
+'test'
