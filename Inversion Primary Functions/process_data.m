@@ -1,7 +1,6 @@
 function [data] = process_data(filename, pulley_ratio, sim_flag)
 %% Input parameters and run processing scripts
 
-pulley_ratio = 0.54154*pulley_ratio;    % adjusted for number of flutes
 fs = 8000;                              % sampling rate [Hz]
 l2l_flag = false;                       % PM motor = true, induction = false
 P = 2;                                  % number of pole pairs, 2 for heavy duty
@@ -16,8 +15,6 @@ if sim_flag == false
 else
     data = preprocess_sim_data(filename, fs, l2l_flag, P, encoder_count, mill);
 end
-
-%%%%%%%%%% DEBUGGING %%%%%%%%%%
 
 data = find_stable_region(data, l2l_flag, avg_time_window);
 

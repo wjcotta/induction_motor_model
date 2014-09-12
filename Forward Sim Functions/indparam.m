@@ -44,15 +44,16 @@ Ls = 0.754/we;                      % Stator leakage
 Lr = 0.754/we;                      % Rotor leakage
 
 J = 0.089;                          % Rotor inertia
-Bl = 0.00;                          % Load damping coefficient (0.02 originally)
+Bl = 0.25;                          % Load damping coefficient 
 
 vds = 0.0;                          % D axis stator voltage
 vqs = 180.0;                        % Q axis stator voltage
 vqr = 0.0;                          % D axis rotor voltage
 vdr = 0.0;                          % Q axis rotor voltage
 
-%torque_load = @(t) 1000*sin(377/4*t);      % Load torque
-torque_load = @(t) 10000*sin(377/4*t);      % Load torque
+% torque_load = @(t) 0;                 % Load torque
+torque_load = @(t) 1000*sin(377/4*t);   % Load torque
+
 
 
 

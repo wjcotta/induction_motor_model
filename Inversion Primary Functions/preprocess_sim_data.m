@@ -42,7 +42,7 @@ a = exp(1i*2*pi/3);
 out.V_clark = sqrt(2/3)*(Va + a.*Vb + a^2.*Vc); % Imaginary component is a real number, but stored there for convenience
 out.I_clark = sqrt(2/3)*(Ia + a.*Ib + a^2.*Ic);
 
-% Alternate formula for Clarke Transformation used for verification.
+% Alternate formula for Clarke Transformation used for verification
 % out.V_alpha = sqrt(2/3)*(Va - (1/2)*Vb - (1/2)*Vc);
 % out.V_beta = sqrt(2/3)*(0 + sqrt(3)/2*Vb - sqrt(3)/2*Vc);
 
@@ -89,9 +89,9 @@ out.Idq = Idq;
 Ids_mean = mean(real(Idq));
 Iqs_mean = mean(imag(Idq));
 
-phi_offset = atan2(Ids_mean, Iqs_mean) + pi/4;      % Rotate currents to ensure no zero crossings.
-% phi_offset = atan2(Ids_mean, Iqs_mean) - pi/4;    % Rotate currents to have same mean positive values. 
-% phi_offset = atan2(Ids_mean, Iqs_mean);           % Rotate Park Transform to make D-axis have mean zero value.
+%%%%%%%%%% DEBUGGING %%%%%%%%%% (changed from - to + pi/4)
+phi_offset = atan2(Ids_mean, Iqs_mean) + pi/4;    % Rotate currents to have same mean positive values.
+% phi_offset = atan2(Ids_mean, Iqs_mean);         % Rotate Park Transform to make D-axis have mean zero value.
 
 park_vect_rot = park_vect.*exp(1i*phi_offset);
 

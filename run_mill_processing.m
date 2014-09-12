@@ -7,6 +7,7 @@ filename3 = '22augcut3';
 filename4 = '22augcut5';
 
 pulley_ratio = 1;
+pulley_ratio = 0.54154*pulley_ratio;    % adjusted for number of flutes
 sim_flag = false;
 
 [data1] = process_data(filename1, pulley_ratio, sim_flag);

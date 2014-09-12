@@ -11,6 +11,13 @@ Lm =  0.15;
 Ls = 0.006;
 Lr = 0.02;
 
+% Rs = 1;
+% Rr = 1;
+% Lm = 1;
+% Ls = 1;
+% Lr = 1;
+
+
 Lal = mean([Ls Lr]);
 
 % % Laughman Thesis Parameters
@@ -128,6 +135,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Find best parameters for 4-parameter model.
 Initial_Parameters = [1 1 1 1];
+% Initial_Parameters = [0.435 0.816 0.069 0.002];
 Scaling_Factors = [Rs Rr Lm Lal];
 
 % Define options structure to be used with parameter solver.
@@ -253,6 +261,7 @@ a1 = plot([A B]);
 wr_mean = out.wr;
 dd = mean(real(out.Wr_est))-wr_mean;
 title(['Mean Speed Diff: ' num2str(dd) ' rps, RMS imag part: ' num2str(rms(imag(out.Wr_est))) '.'])
+legend('Estimated','Measured')
 subplot(3,2,3);
 plot(imag(out.Wr_est)/2/pi);
 subplot(3,2,5);
