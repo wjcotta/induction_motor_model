@@ -12,13 +12,15 @@ sim_flag = true;
 idq = load('sim_idq');
 idq = idq.idq;
 
-V_alpha = real(data.V_clark);
-V_beta = imag(data.V_clark);
+V_clark_alpha = mean(real(data.V_clark));
+V_clark_beta = mean(imag(data.V_clark));
+V_alpha = mean(data.V_alpha);
+V_beta = mean(data.V_beta);
 
 % idq has the form [ids iqs idr iqr].
 
 %% Check stator current transformation
-%{
+
 % Check ids (sim) vs Ids (preprocess)
 figure(1)
 plot(idq(:,1))
@@ -38,7 +40,7 @@ plot(real(data.IdqDeMod))
 % Plot Iqs DemMod
 figure(4)
 plot(imag(data.IdqDeMod))
-%}
+
 
 %% Check rotor current transformation
 %{
