@@ -17,7 +17,6 @@ Lr = 0.02;
 % Ls = 1;
 % Lr = 1;
 
-
 Lal = mean([Ls Lr]);
 
 % % Laughman Thesis Parameters

@@ -39,10 +39,10 @@ th    = statev(6);
 
 torque_load_total = torque_load(t) + Bl*wr;
 
-ids = (Lm*lamdr - Lar*lamds)/D;
 iqs = (Lm*lamqr - Lar*lamqs)/D;
-idr = (Lm*lamds - Las*lamdr)/D;
+ids = (Lm*lamdr - Lar*lamds)/D;
 iqr = (Lm*lamqs - Las*lamqr)/D;
+idr = (Lm*lamds - Las*lamdr)/D;
 
 s1 = (vqs - w*lamds - Rs*iqs);
 s2 = (vds + w*lamqs - Rs*ids);
