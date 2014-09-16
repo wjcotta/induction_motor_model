@@ -1,5 +1,5 @@
 *.fig
 *.png
 *.jpeg
-sim_data.mat
-sim_idq.mat
+*.mat
+!GIT_DIR/'Mill Data'/*.mat
