@@ -2,4 +2,4 @@
 *.png
 *.jpeg
 *.mat
-!'Mill Data'/*
+!'Mill Data'/*.mat
