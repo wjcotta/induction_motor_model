@@ -12,25 +12,27 @@
 global P we Rs Rr Lm Ls Lr J Bl vds vqs vqr vdr torque_load
 
 %% Parameters for mill motor (mill_flag = true):
-
+% 
 % P = 2;                              % Number of pole pairs
 % we = 377;                           % Base electrical frequency, rad/s (60 Hz)
-% 
+%  
 % Rs = 2.3931/3;                      % Stator resistance
 % Rr = 1.5474/3;                      % Rotor resistance
 % Lm = 0.1613;                        % Magnetizing inductance
 % Ls = 0.0079;                        % Stator leakage
 % Lr = 0.0079;                        % Rotor leakage
 % 
-% J = 0.00170;                        % Rotor inertia
-% Bl = 0.0439;                        % Load damping coefficient
+% J = 0.0170;                        % Rotor inertia
+% Bl = 0;
+% %Bl = 0.0439;                        % Load damping coefficient
 % 
-% vds = -80;                          % D-axis stator voltage
-% vqs = 191;                          % Q-axis stator voltage
+% vds = 0;                          % D-axis stator voltage
+% vqs = 180;                          % Q-axis stator voltage
 % vqr = 0.0;                          % D-axis rotor voltage
 % vdr = 0.0;                          % Q-axis rotor voltage
 % 
-% torque_load = @(t) sin(377*t);      % Load torque
+% pulley_ratio = .54154;
+% torque_load = @(t) sin(377*(1/pulley_ratio)*t);      % Load torque
 
 %% Example parameters for a 3 Hp, 180V (L-N, peak) AC induction machine (mill_flag = false):
 
@@ -44,7 +46,7 @@ Ls = 0.754/we;                      % Stator leakage
 Lr = 0.754/we;                      % Rotor leakage
 
 J = 0.089;                          % Rotor inertia
-Bl = 0.25;                          % Load damping coefficient 
+Bl = 0.002;                          % Load damping coefficient 
 
 vds = 0.0;                          % D axis stator voltage
 vqs = 180.0;                        % Q axis stator voltage
@@ -53,7 +55,7 @@ vdr = 0.0;                          % Q axis rotor voltage
 
 
 %torque_load = @(t) 0*sin(377/4*t);      % Load torque
-torque_load = @(t) 12.5*sin(377/4*t);      % Load torque
+torque_load = @(t) 10*sin(377/4*t);      % Load torque
 
 
 

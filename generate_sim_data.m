@@ -13,8 +13,7 @@ close all;
 speed = statev(:,5)./P;
 % Append data with the motor speed from the solution to runind. 
 data = [data, speed];
-size(data)
-plot(data(:,7))
+
 % We now have 7 columns of data, saved in 'sim_data'.
 save('sim_data', 'data')
 
