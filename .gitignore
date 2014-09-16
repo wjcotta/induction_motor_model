@@ -2,4 +2,4 @@
 *.png
 *.jpeg
 *.mat
-!GIT_DIR/'Mill Data'/*.mat
+!'Mill Data'/*
