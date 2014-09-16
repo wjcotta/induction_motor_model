@@ -1,3 +1,5 @@
 *.fig
 *.png
 *.jpeg
+sim_data.mat
+sim_idq.mat
