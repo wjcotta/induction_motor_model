@@ -52,7 +52,7 @@ vqr = 0.0;                          % D axis rotor voltage
 vdr = 0.0;                          % Q axis rotor voltage
 
 %torque_load = @(t) 1000*sin(377/4*t);      % Load torque
-torque_load = @(t) 10000*sin(377/4*t);      % Load torque
+torque_load = @(t) 12.5*sin(377/4*t);      % Load torque
 
 
 
