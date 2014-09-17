@@ -43,8 +43,8 @@ out.V_clark = sqrt(2/3)*(Va + a.*Vb + a^2.*Vc); % Imaginary component is a real 
 out.I_clark = sqrt(2/3)*(Ia + a.*Ib + a^2.*Ic);
 
 % Alternate formula for Clarke Transformation used for verification
-% out.V_alpha = sqrt(2/3)*(Va - (1/2)*Vb - (1/2)*Vc);
-% out.V_beta = sqrt(2/3)*(0 + sqrt(3)/2*Vb - sqrt(3)/2*Vc);
+out.V_alpha = sqrt(2/3)*(Va - (1/2)*Vb - (1/2)*Vc);
+out.V_beta = sqrt(2/3)*(0 + sqrt(3)/2*Vb - sqrt(3)/2*Vc);
 
 out.V_gamma = sqrt(2/3)*(1/2)*(Va + Vb + Vc);   % Not used, computed for completeness
 out.I_gamma = sqrt(2/3)*(1/2)*(Ia + Ib + Ic);

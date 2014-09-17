@@ -10,15 +10,20 @@ runind;
 [idq, vabc, iabc, ~, ~] = conv2abc(t, statev);
 data = [vabc iabc];
 close all;
-speed = statev(:,5)./P;
+
 % Append data with the motor speed from the solution to runind. 
-data = [data, speed];
-size(data)
-plot(data(:,7))
+Speed = statev(:,5)/P;
+data = [data, Speed];
+
+plot(t, data(:,7))
+xlabel('Time (s)')
+ylabel('Mechanical Rotor Speed (rad/s)')
+title('Motor Spin-up')
+axis([0 45 0 125])
+
 % We now have 7 columns of data, saved in 'sim_data'.
 save('sim_data', 'data')
 
 % Save dq0 currents for debugging.
-
 save('sim_idq', 'idq')
 

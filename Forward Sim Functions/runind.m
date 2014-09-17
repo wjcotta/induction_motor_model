@@ -19,9 +19,18 @@ state0 = [0 0 0 0 0 0]';
 
 [t, statev] = ode45('ind', tspan, state0);
 
+figure(1)
 plot(t, statev(:,5));
 xlabel('Time (s)');
 ylabel('Electrical Rotor Speed (rad/s)');
+axis([0 45 0 250])
+title('Motor Spin-up');
+
+figure(2)
+plot(t, statev(:,6));
+xlabel('Time (s)');
+ylabel('Mechanical Shaft Angle (rad)');
+axis([0 45 0 6000])
 title('Motor Spin-up');
 
 ind1 = find(t,1.000);
