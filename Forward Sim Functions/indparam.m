@@ -21,10 +21,9 @@ global P we Rs Rr Lm Ls Lr J Bl vds vqs vqr vdr torque_load
 % Lm = 0.1613;                        % Magnetizing inductance
 % Ls = 0.0079;                        % Stator leakage
 % Lr = 0.0079;                        % Rotor leakage
-% 
+%
 % J = 0.0170;                         % Rotor inertia
-% Bl = 0;
-% %Bl = 0.0439;                       % Load damping coefficient
+% Bl = 0.0439;                        % Load damping coefficient
 % 
 % vds = 0;                            % D-axis stator voltage
 % vqs = 180;                          % Q-axis stator voltage
@@ -55,7 +54,6 @@ vdr = 0.0;                          % Q axis rotor voltage
 
 % torque_load = @(t) 0*sin(377/4*t);      % Load torque
 % torque_load = @(t) 12.5*sin(377/4*t);   % Load torque
-
 
 
 

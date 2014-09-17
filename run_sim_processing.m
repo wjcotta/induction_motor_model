@@ -4,6 +4,7 @@ generate_sim_data
 clear all; close all;
 
 filename = 'sim_data';
+
 pulley_ratio = 1;
 % pulley_ratio = 0.5;        
       

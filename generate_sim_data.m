@@ -18,8 +18,8 @@ data = [data, Speed];
 plot(t, data(:,7))
 xlabel('Time (s)')
 ylabel('Mechanical Rotor Speed (rad/s)')
-title('Motor Spin-up')
 axis([0 45 0 125])
+title('Motor Spin-up')
 
 % We now have 7 columns of data, saved in 'sim_data'.
 save('sim_data', 'data')
