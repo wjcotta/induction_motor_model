@@ -26,9 +26,9 @@ Lar = Lr + Lm;
 D = Lm*Lm - Las*Lar;
 
 % Turn motor off at 1 sec 
-% if t > 1.0
-%    vqs = 0.0;
-% end
+if t > 30.0
+   vqs = 0.0;
+end
 
 lamqs = statev(1);
 lamds = statev(2);
@@ -38,8 +38,8 @@ wr    = statev(5);
 th    = statev(6);
 
 % torque_load_total = torque_load(t) + Bl*wr/P;
-torque_load = 10*sin(slip*th/2) + Bl*wr/P;
-
+%torque_load = 5*sin(slip*th/2) + Bl*wr/P;
+torque_load = Bl*wr/P;
 iqs = (Lm*lamqr - Lar*lamqs)/D;
 ids = (Lm*lamdr - Lar*lamds)/D;
 iqr = (Lm*lamqs - Las*lamqr)/D;

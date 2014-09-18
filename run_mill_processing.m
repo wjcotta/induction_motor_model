@@ -1,27 +1,30 @@
 clear all; close all; clc;
 startup;
-
+%{
 filename1 = '22augcut1';
 filename2 = '22augcut2';
 filename3 = '22augcut3';
 filename4 = '22augcut5';
-
-pulley_ratio = 1;
-pulley_ratio = 0.54154*pulley_ratio;    % adjusted for number of flutes
+%}
+filename = '22augcut2';
+pulley_ratio = 0.54154*1;    % adjusted for number of flutes
 sim_flag = false;
+[data] = process_data(filename, pulley_ratio, sim_flag);
 
+slip = 
+%{
 [data1] = process_data(filename1, pulley_ratio, sim_flag);
 [data2] = process_data(filename2, pulley_ratio, sim_flag);
 [data3] = process_data(filename3, pulley_ratio, sim_flag);
 [data4] = process_data(filename4, pulley_ratio, sim_flag);
 close all
-
+%}
 %{
 [data1] = process_data('no_load',0.5);
 [data2] = process_data('cut2Jun23_damaged_4flute',0.5);
 [data3] = process_data('cut3Jun23_intact_4flute',0.5);
 close all
-%}
+
 
 num_cols = 4;
 
@@ -135,7 +138,7 @@ if num_cols ==4;
     plot(damaged0075,'r');
 end
 %%
-%{
+
 %%
 for k=[num_cols+2:2*num_cols];
     torque1 = torque_matrix(:,k);
