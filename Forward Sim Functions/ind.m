@@ -17,7 +17,7 @@ function [slopes] = ind(t, statev)
 %  will be conducted.  With w = 377, the simulation variables will be in
 %  a synchronously rotating reference frame.
 
-global P we Rs Rr Lm Ls Lr J Bl vds vqs vqr vdr torque_load
+global P we Rs Rr Lm Ls Lr J Bl vds vqs vqr vdr torque_load slip
 
 w = 377;
 
@@ -37,21 +37,23 @@ lamdr = statev(4);
 wr    = statev(5);
 th    = statev(6);
 
-torque_load_total = torque_load(t) + Bl*wr;
+% torque_load_total = torque_load(t) + Bl*wr/P;
+torque_load = 10*sin(slip*th/2) + Bl*wr/P;
 
 iqs = (Lm*lamqr - Lar*lamqs)/D;
 ids = (Lm*lamdr - Lar*lamds)/D;
 iqr = (Lm*lamqs - Las*lamqr)/D;
 idr = (Lm*lamds - Las*lamdr)/D;
 
+torque_mag = (3/2)*P*(lamqr*idr - lamdr*iqr);
+
 s1 = (vqs - w*lamds - Rs*iqs);
 s2 = (vds + w*lamqs - Rs*ids);
 s3 = (vqr - (w - wr)*lamdr - Rr*iqr);
 s4 = (vdr + (w - wr)*lamqr - Rr*idr);
 
-torque_mag = (3/2)*P*(lamqr*idr - lamdr*iqr);
-
-s5 = P*(torque_mag - torque_load_total)/J;
+% s5 = P*(torque_mag - torque_load_total)/J;
+s5 = P*(torque_mag - torque_load)/J;
 s6 = 377;
 
 slopes = [s1 s2 s3 s4 s5 s6]';

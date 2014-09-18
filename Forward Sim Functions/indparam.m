@@ -9,7 +9,7 @@
 %
 %  Copyright, 1995, 1997, 1998, 2000  Steven B. Leeb
 
-global P we Rs Rr Lm Ls Lr J Bl vds vqs vqr vdr torque_load
+global P we Rs Rr Lm Ls Lr J Bl vds vqs vqr vdr torque_load slip
 
 %% Parameters for mill motor (mill_flag = true):
 % 
@@ -46,7 +46,7 @@ Ls = 0.754/we;                      % Stator leakage
 Lr = 0.754/we;                      % Rotor leakage
 
 J = 0.089;                          % Rotor inertia
-Bl = 0.002;                         % Load damping coefficient 
+Bl = 0.004;                         % Load damping coefficient 
 
 vds = 0.0;                          % D axis stator voltage
 vqs = 180.0;                        % Q axis stator voltage
@@ -54,7 +54,7 @@ vqr = 0.0;                          % D axis rotor voltage
 vdr = 0.0;                          % Q axis rotor voltage
 
 slip = 0.9975;
-torque_load = @(t) 10*sin(slip*377/2*t);      % Load torque
+% torque_load = @(t) 10*sin(slip*377/2*t);      % Load torque
 
 
 

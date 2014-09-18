@@ -18,7 +18,7 @@ function [idq, vabc, iabc, torque_mag, power] = conv2abc(t, statev)
 %
 % Copyright, 1995, 1998, 2002  Steven B. Leeb
 
-global P we Rs Rr Lm Ls Lr J Bl vds vqs vqr vdr torque_load
+global P we Rs Rr Lm Ls Lr J Bl vds vqs vqr vdr torque_load slip
 
 % Select reference frame (see ind.m).
 w = 377; 
