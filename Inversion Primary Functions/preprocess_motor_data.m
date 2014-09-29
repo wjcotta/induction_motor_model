@@ -1,4 +1,4 @@
-function out = preprocess_motor_data(filename, fs, l2l_flag, P, encoder_count, mill)
+function out = preprocess_motor_data(filename, fs, l2l_flag, P, encoder_count, mill,divisor_flag,varagin)
 
 % This function converts the raw output of the Labjack DAQ device into physical units suitable for calculation, does time-shifting to account for interchannel delay,
 % performs Clark and Park transformations (accounting for variable electric frequency over course of experiment), and produces an estimate of instantaneous electric frequency.
@@ -6,7 +6,9 @@ function out = preprocess_motor_data(filename, fs, l2l_flag, P, encoder_count, m
 if (nargin < 5)
     encoder_count = 1800;
 end
-
+if (nargin < 7)
+    divisor_flag = false
+end
 %% Load data
 load(filename)
 out.filename = filename;
@@ -74,6 +76,10 @@ AIN5 = data(sI:eI,6);   % Vca if line to line measurement
 if size(data,2) == 7
     Counts = data(sI:eI,7);
     divisor = 8;
+    if divisor_flag ~= false;
+        divisor = divisor_flag;
+    end
+    divisor
     Speed = speed_clean(Counts,divisor,encoder_count);
     ms = mean(Speed/2/pi);
     dtS = (-1/(ms*encoder_count/divisor));
@@ -204,15 +210,24 @@ if mill=='light duty';
     Vb = AIN3;
     Vc = AIN5;
 else
+    % Post Safety Modifications
+%     Ia = AIN0;
+%     Ib = -AIN1; % current sensor are on backwards so this is negative
+%     Ic = -AIN2; % current sensor are on backwards so this is negative
+%     Va = AIN3; % These are remapped due to configuration differences in the NILM box.
+%     Vb = AIN4;
+%     Vc = AIN5;
+    % Pre Safety Modifications
     Ia = AIN0;
-    Ib = -AIN1; % current sensor are on backwards so this is negative
-    Ic = -AIN2; % current sensor are on backwards so this is negative
-    Va = AIN3; % These are remapped due to configuration differences in the NILM box.
+    Ib = AIN1; % These are remapped due to configuration differences in the NILM box.
+    Ic = AIN2; 
+    Va = AIN3; 
     Vb = AIN4;
     Vc = AIN5;
 end
 
 %%
+
 out.Speed = real(Speed);
 out.Power = real(Va.*Ia + Vb.*Ib + Vc.*Ic);
 out.Vwye = real([Va Vb Vc]);
@@ -229,8 +244,8 @@ out.fs = fs;
 
 a = exp(1i*2*pi/3);
 
-out.V_clark = sqrt(2/3)*(Va + a.*Vc + a^2.*Vb); % Imaginary component is a real number, but stored there for convenience
-out.I_clark = sqrt(2/3)*(Ia + a.*Ic + a^2.*Ib);
+out.V_clark = sqrt(2/3)*(Va + a.*Vb + a^2.*Vc); % Imaginary component is a real number, but stored there for convenience
+out.I_clark = sqrt(2/3)*(Ia + a.*Ib + a^2.*Ic);
 
 out.V_gamma = sqrt(2/3)*(1/2)*(Va + Vb + Vc);   % Not used, computed for completeness
 out.I_gamma = sqrt(2/3)*(1/2)*(Ia + Ib + Ic);

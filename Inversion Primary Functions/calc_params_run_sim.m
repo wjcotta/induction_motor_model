@@ -3,19 +3,20 @@ function out = calc_params_run_sim(data, wr_load, P, tune, useTrueSpeed)
 out = data;
 fs = out.fs;
 we = mean(out.WeDeMod(out.indl_schantz));
-
+wr_load
 % Set scaling factors for parameters.
+%{
 Rs = 4;
 Rr = 4;
 Lm =  0.15;
 Ls = 0.006;
 Lr = 0.02;
-
-% Rs = 1;
-% Rr = 1;
-% Lm = 1;
-% Ls = 1;
-% Lr = 1;
+%}
+Rs = 1;
+Rr = 1;
+Lm = 1;
+Ls = 1;
+Lr = 1;
 
 Lal = mean([Ls Lr]);
 

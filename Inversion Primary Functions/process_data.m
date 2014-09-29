@@ -18,8 +18,7 @@ end
 
 data = find_stable_region(data, l2l_flag, avg_time_window);
 
-%load_wr = data.wr*pulley_ratio;
-load_wr = -1;
+load_wr = data.wr*pulley_ratio;
 
 data = decompose_indmotor_data(data, load_wr);
 

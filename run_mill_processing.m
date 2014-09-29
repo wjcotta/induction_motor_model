@@ -11,7 +11,7 @@ pulley_ratio = 0.54154*1;    % adjusted for number of flutes
 sim_flag = false;
 [data] = process_data(filename, pulley_ratio, sim_flag);
 
-slip = 
+%slip = 
 %{
 [data1] = process_data(filename1, pulley_ratio, sim_flag);
 [data2] = process_data(filename2, pulley_ratio, sim_flag);
