@@ -4,3 +4,4 @@
 *.mat
 *.m~
 !'Mill Data'/*
+*.dat
