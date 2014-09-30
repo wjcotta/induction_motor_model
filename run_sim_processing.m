@@ -1,10 +1,11 @@
 clear all; close all; clc;
 
 generate_sim_data
+pause
 clear all;
 
 filename = 'sim_data';
-pulley_ratio =  1;
+pulley_ratio =  -1;
 %pulley_ratio = .54154;
 sim_flag = true;
 

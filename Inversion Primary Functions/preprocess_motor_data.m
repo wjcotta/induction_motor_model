@@ -218,8 +218,8 @@ else
 %     Vb = AIN4;
 %     Vc = AIN5;
     % Pre Safety Modifications
-    Ia = AIN0;
-    Ib = AIN1; % These are remapped due to configuration differences in the NILM box.
+    Ia = AIN1;
+    Ib = AIN0; % These are remapped due to configuration differences in the NILM box.
     Ic = AIN2; 
     Va = AIN3; 
     Vb = AIN4;

@@ -11,6 +11,9 @@ runind;
 data = [vabc iabc];
 close all;
 speed = statev(:,5)./P;
+plot(iabc)
+pause
+slip = speed/(we/P);
 % Append data with the motor speed from the solution to runind. 
 data = [data, speed];
 

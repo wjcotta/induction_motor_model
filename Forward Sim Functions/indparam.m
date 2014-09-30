@@ -22,11 +22,14 @@ Lm = 0.1619;                        % Magnetizing inductance
 Ls = 0.0075;                        % Stator leakage
 Lr = 0.0075;                        % Rotor leakage
 
+Tc = 4.6626;
 %J = 0.220;
-J = 0.2350;                        % Rotor inertia
-Bl = 0.0441;
+%J = 0.2350;                        % Rotor inertia
+Bl = 0.080;
 %Bl = 0.04;
 %Bl = 0.0439;                        % Load damping coefficient
+J = Tc*Bl
+
 
 vds = 0;                          % D-axis stator voltage
 vqs = 180;                          % Q-axis stator voltage

@@ -14,18 +14,12 @@ load(filename);
 temp = data;
 clear data
 
-
-
 data.raw = temp;
 data.time = [bounds(1,1)/fs : 1/fs : bounds(1,2)/fs];
 data.current = data.raw(:,1);
 data.voltage = data.raw(:,2);
 data.speed8 = data.raw(bounds(1,1):bounds(1,2),3);
 data.speed1 = data.raw(bounds(1,1):bounds(1,2),4);
-
-
-
-
 
 divisor = 8;
 data.speed8 = speed_clean(data.speed8,divisor,encoder_count);
@@ -67,15 +61,17 @@ b = fir1(20,Wn,'low',kaiser(21,3));
 speed_stop = filter(b,1,speed_stop);
 speed_stop = speed_stop(50:end);
 x = [0:1/fs:(length(speed_stop)-1)/fs]';
-plot(x,speed_stop)
+
 %%
 f1 = fit(x,speed_stop,'poly1')
 
 p1 = f1.p1/f1.p2;
 Tc = -1/p1
 
+e1fit = fit(x,speed_stop,'exp1')
+
 h = 1/fs;
-plot(diff(speed_stop)/h)
+plot(x,speed_stop)
 
 
     

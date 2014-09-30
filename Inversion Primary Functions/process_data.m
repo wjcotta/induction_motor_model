@@ -15,10 +15,13 @@ if sim_flag == false
 else
     data = preprocess_sim_data(filename, fs, l2l_flag, P, encoder_count, mill);
 end
-
+%{
 data = find_stable_region(data, l2l_flag, avg_time_window);
-
-load_wr = data.wr*pulley_ratio;
+if pulley_ratio == -1;
+    load_wr = -1;
+else;
+    load_wr = data.wr*pulley_ratio;
+end
 
 data = decompose_indmotor_data(data, load_wr);
 
@@ -60,5 +63,5 @@ end
 
 data.torque_mag = torque_mag;
 data.torque_load = torque_load;
-
+%}
 end
