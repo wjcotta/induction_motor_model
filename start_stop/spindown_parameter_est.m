@@ -1,11 +1,15 @@
 clear all;close all;clc;
 
-filename = 'spindown2';
-% spindown2
-bounds = [3.25e4,9.424e4];
+% filename = 'spindown2';
+% % spindown2
+% bounds = [3.25e4,9.424e4];
+% stop_8 = [2.299e4, 4.348e4];
+% %
+% nobelt1
+filename = 'nobelt2';
+
+bounds = [2.377e4,2.043e5];
 stop_8 = [2.299e4, 4.348e4];
-
-
 encoder_count = 1800;
 fs = 8000;
 t_shift = @(a,t0,fs)ifft(fft(a).*exp(-1i*2*pi*t0*(ifftshift((0:length(a)-1)' -ceil((length(a)-1)/2))/length(a)*fs)));
@@ -23,13 +27,16 @@ data.speed1 = data.raw(bounds(1,1):bounds(1,2),4);
 
 divisor = 8;
 data.speed8 = speed_clean(data.speed8,divisor,encoder_count);
-ms = mean(data.speed8/2/pi);
-dtS = (-1/(ms*encoder_count/divisor));
-data.speed8 = t_shift(data.speed8,dtS,fs);
+%ms = mean(data.speed8/2/pi);
+%dtS = (-1/(ms*encoder_count/divisor));
+%data.speed8 = t_shift(data.speed8,dtS,fs);
+plot(data.speed8)
 
+pause
 divisor = 1;
 data.speed1 = speed_clean(data.speed1,divisor,encoder_count);
-
+plot(data.speed1)
+pause
 num_del =0;
 temp = data.speed1;
 for i=1:length(temp)
@@ -40,11 +47,12 @@ for i=1:length(temp)
         num_del = num_del + 1;
     end
 end
-max(temp)
-ms = mean(temp)
-dtS = (-1/(ms*encoder_count/divisor))
-data.speed1 = t_shift(temp,dtS,fs);
-
+%max(temp)
+%ms = mean(temp)
+%dtS = (-1/(ms*encoder_count/divisor))
+%data.speed1 = t_shift(temp,dtS,fs);
+plot(data.speed1)
+pause
 %%
 % spindown2
 stop_1 = [4.348e4+num_del,length(data.speed1)];

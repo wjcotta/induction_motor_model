@@ -51,6 +51,12 @@ out.I_gamma = sqrt(2/3)*(1/2)*(Ia + Ib + Ic);
 
 
 %% Park Transform
+figure(1)
+subplot(2,1,1)
+plot(real(out.V_clark));
+subplot(2,1,2)
+plot(imag(out.V_clark));
+
 
 if l2l_flag  % inverter-driven, so very noisy
     intercept_times = Zero_Intercept_Times(real(resample(out.V_clark,1,10)),out.Time(1:10:end)');

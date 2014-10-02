@@ -15,6 +15,7 @@ if sim_flag == false
 else
     data = preprocess_sim_data(filename, fs, l2l_flag, P, encoder_count, mill);
 end
+slip_check(data)
 %{
 data = find_stable_region(data, l2l_flag, avg_time_window);
 if pulley_ratio == -1;

@@ -7,7 +7,7 @@ if (nargin < 5)
     encoder_count = 1800;
 end
 if (nargin < 7)
-    divisor_flag = false
+    divisor_flag = false;
 end
 %% Load data
 load(filename)
@@ -17,7 +17,9 @@ out.filename = filename;
 %% Set calibration constants for the three-phase HP power supply and analyzer.
 % Schantz box configured so all voltage channels measure the same voltage phase, likewise for the current channels.
 
-Slopes = [0.000935547853831 0.001010673290357 0.001015083089409 0.091020193288373 0.091089882503841 0.090792761167529];
+%Slopes = [0.000935547853831 0.001010673290357 0.001015083089409 0.091020193288373 0.091089882503841 0.090792761167529];
+Slopes = [0.001010673290357  0.000935547853831 0.001015083089409 0.091020193288373 0.091089882503841 0.090792761167529];
+
 
 %Slopes = [0.00062334 0.00063414 0.0006251 0.062319 0.05787 0.063953];
 %Slopes = [0.0016138 0.0016195 0.0016240 0.090972 0.091101 0.090825];
@@ -77,9 +79,8 @@ if size(data,2) == 7
     Counts = data(sI:eI,7);
     divisor = 8;
     if divisor_flag ~= false;
-        divisor = divisor_flag;
+        divisor = divisor_flag
     end
-    divisor
     Speed = speed_clean(Counts,divisor,encoder_count);
     ms = mean(Speed/2/pi);
     dtS = (-1/(ms*encoder_count/divisor));

@@ -1,7 +1,6 @@
 clear all; close all; clc;
 
 generate_sim_data
-pause
 clear all;
 
 filename = 'sim_data';

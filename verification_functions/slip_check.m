@@ -1,21 +1,13 @@
-function [] = slip_check(iabc,speed,elec_freq,Pole_pairs )
+function [] = slip_check(speed,elec_freq,Pole_pairs,varagin)
 %UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
-
-h = 100;
-phase_rms=zeros(length(speed)-h,3);
-%% Find Transients
-for i=1:length(speed)-h;
-    phase_rms(i,:) = rms(iabc(i:i+h,:));
+%   Calculates the slip of motor based on speed 
+mean_speed = 0;
+for i = 1:1000:length(speed)-1000;
+    if mean(speed(i:i+1000)) > mean_speed ;
+        mean_speed = mean(speed(i:i+1000));
+    end
 end
-
-size(phase_rms)
-
-figure(1)
-subplot(2,1,1)
-plot(iabc)
-subplot(2,1,2)
-plot(phase_rms)
-end
-
-
+slip = 1 -  mean_speed/(elec_freq/Pole_pairs)
+if slip > 0.10;
+    error(strcat('SlipError: Motor slip exceeds 10%, something is probably',...
+          ' wrong, as motors are generally unstable above 7% slip'))
