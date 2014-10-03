@@ -2,6 +2,6 @@
 *.png
 *.jpeg
 *.mat
-*.m~
 !'Mill Data'/*
 *.dat
+*.m~

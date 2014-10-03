@@ -9,6 +9,8 @@ end
 if (nargin < 7)
     divisor_flag = false;
 end
+
+
 %% Load data
 load(filename)
 out.filename = filename;
@@ -18,7 +20,7 @@ out.filename = filename;
 % Schantz box configured so all voltage channels measure the same voltage phase, likewise for the current channels.
 
 %Slopes = [0.000935547853831 0.001010673290357 0.001015083089409 0.091020193288373 0.091089882503841 0.090792761167529];
-Slopes = [0.001010673290357  0.000935547853831 0.001015083089409 0.091020193288373 0.091089882503841 0.090792761167529];
+Slopes= [0.000935547853831 0.001010673290357 0.001015083089409 0.091020193288373 0.091089882503841 0.090792761167529];
 
 
 %Slopes = [0.00062334 0.00063414 0.0006251 0.062319 0.05787 0.063953];
@@ -75,7 +77,7 @@ AIN5 = data(sI:eI,6);   % Vca if line to line measurement
 % always at least 1/5 an edge pair duration old and up to 1 1/2 edge-pair durations olds (depending on when the latch contents
 % are read by the data logger), for an average of 1 edge-pair duration time delay in the derived speed.
 
-if size(data,2) == 7
+if (size(data,2)==7) | (size(data,2)==8)
     Counts = data(sI:eI,7);
     divisor = 8;
     if divisor_flag ~= false;
@@ -85,7 +87,7 @@ if size(data,2) == 7
     ms = mean(Speed/2/pi);
     dtS = (-1/(ms*encoder_count/divisor));
 end
-
+%{
 if size(data,2) == 8
     coef = [-0.000152179987790691, 7.44468811677644];
     Counts = data(sI:eI,8);
@@ -122,7 +124,7 @@ if size(data,2) == 10
     out.TI_pwmdac_chan3 = ((nom_Slope.*data(sI:eI,10)) + nom_Offset-1.65)/1.65;
 
 end
-
+%}
 clear data
 
 %% Convert Labjack bits to currents
@@ -221,8 +223,8 @@ else
     % Pre Safety Modifications
     Ia = AIN1;
     Ib = AIN0; % These are remapped due to configuration differences in the NILM box.
-    Ic = AIN2; 
-    Va = AIN3; 
+    Ic = AIN2;
+    Va = AIN3;
     Vb = AIN4;
     Vc = AIN5;
 end
@@ -245,8 +247,8 @@ out.fs = fs;
 
 a = exp(1i*2*pi/3);
 
-out.V_clark = sqrt(2/3)*(Va + a.*Vb + a^2.*Vc); % Imaginary component is a real number, but stored there for convenience
-out.I_clark = sqrt(2/3)*(Ia + a.*Ib + a^2.*Ic);
+out.V_clark = sqrt(2/3)*(Va + a.*Vc + a^2.*Vb); % Imaginary component is a real number, but stored there for convenience
+out.I_clark = sqrt(2/3)*(Ia + a.*Ic + a^2.*Ib);
 
 out.V_gamma = sqrt(2/3)*(1/2)*(Va + Vb + Vc);   % Not used, computed for completeness
 out.I_gamma = sqrt(2/3)*(1/2)*(Ia + Ib + Ic);
