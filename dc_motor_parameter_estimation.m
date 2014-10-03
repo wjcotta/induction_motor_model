@@ -125,38 +125,29 @@ plot(temp_exp,'k');
 hold off
 
 %% Use Shaft Encoder
-t_shift = @(a,t0,fs) ifft(fft(a).*exp(-1i*2*pi*t0*(ifftshift((0:length(a)-1)' -ceil((length(a)-1)/2))/length(a)*fs)));
 
-% Divisor = 8
+% Divisor = 1
 figure(2)
-
 divisor = 1;
-Speed = speed_clean(temp_data(:,3),divisor,encoder_count);
-ms = mean(Speed(temp_bounds(1):temp_bounds(2))/2/pi);
-dtS = (-1/(ms*encoder_count/divisor));
-
+Speed = speed_clean(temp_data(:,4),divisor,encoder_count);
 subplot(2,1,1)
-plot(temp_time(temp_bounds(1):temp_bounds(2)),Speed(temp_bounds(1):temp_bounds(2)));
-ylim([-10 400]);
+plot(temp_time,Speed);
+ylim([-10 210]);
 
 subplot(2,1,2)
-Speed = t_shift(Speed,dtS,fs)
-plot(temp_time,Speed)
-ylim([-10 400]);
+hold on
+plot(temp_time(temp_bounds(2):temp_bounds(3)),Speed(temp_bounds(2):temp_bounds(3)))
+ylim([-10 200]);
 
-% Divisor = 1 
+ 
+% Divisor = 8
 figure(3)
-
 divisor = 8;
 Speed = speed_clean(temp_data(:,3),divisor,encoder_count);
-ms = mean(Speed(temp_bounds(1):temp_bounds(2))/2/pi);
-dtS = (-1/(ms*encoder_count/divisor));
-
 subplot(2,1,1)
-plot(temp_time(temp_bounds(1):temp_bounds(2)),Speed(temp_bounds(1):temp_bounds(2)));
-ylim([-10 400]);
+plot(temp_time,Speed);
+ylim([-10 210]);
 
 subplot(2,1,2)
-Speed = t_shift(Speed(temp_bounds(1):temp_bounds(2)),dtS,fs)
-plot(temp_time(temp_bounds(1):temp_bounds(2)),real(Speed))
+plot(temp_time(temp_bounds(2):temp_bounds(3)),Speed(temp_bounds(2):temp_bounds(3)))
 ylim([-10 400]);
