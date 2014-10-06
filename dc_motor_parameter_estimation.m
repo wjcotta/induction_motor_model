@@ -60,13 +60,13 @@ for i = 1:data_size;
 end
 %% Plot Verification Section
 % Plot data to verify it is formatted correctly
-% for i = 1:data_size;
-%     name = char(data_fields(i));
-%     temp = getfield(data,name);
-%     subplot(data_size,1,i);
-%     plot(temp(:,1))
-% end
-
+for i = 1:data_size;
+    name = char(data_fields(i));
+    temp = getfield(data,name);
+    subplot(data_size,1,i);
+    plot(temp(:,1))
+end
+pause
 % Plot speed and currents
 % for i = 1:data_size;
 %     name = char(data_fields(i));
@@ -111,43 +111,81 @@ name = 'dc3'
 temp_data = getfield(data,name);
 temp_time = getfield(time,name);
 temp_bounds = getfield(bounds,name);
-temp_linear = getfield(fit_linear,name);
-temp_exp = getfield(fit_exp,name);
+temp_linear = getfield(fit_linear,name)
+temp_exp = getfield(fit_exp,name)
+
 figure(1);
+title('Spindown using DC Motor')
 subplot(2,1,1)
+
 plot(temp_time,temp_data(:,1));
+ylabel('Entire Spin Up/Down')
+
+
 subplot(2,1,2)
+
+
 hold on
 plot(temp_time(temp_bounds(2):temp_bounds(3),:),...
      temp_data(temp_bounds(2):temp_bounds(3),1),'*g');
 plot(temp_linear,'b');
 plot(temp_exp,'k');
+ylabel('Spin Down Only')
+legend({'Experimental Data','Linear Fit','Exponential Fit'})
 hold off
 
 %% Use Shaft Encoder
 
 % Divisor = 1
 figure(2)
+title('Spindown using 1 Divisor Encoder')
 divisor = 1;
 Speed = speed_clean(temp_data(:,4),divisor,encoder_count);
 subplot(2,1,1)
+ylabel('Entire Spin Up/Down')
 plot(temp_time,Speed);
 ylim([-10 210]);
 
+temp = [temp_time(temp_bounds(2):temp_bounds(3)),Speed(temp_bounds(2):temp_bounds(3))];
+temp = temp(~any(isnan(temp),2),:);
+temp = temp(~any(isinf(temp),2),:);
+fit_lin = fit(temp(:,1),temp(:,2),'poly1')
+Tc = 1/ (fit_lin.p1/fit_lin.p2)
+
+
+fit_exp = fit(temp(:,1),temp(:,2),'exp1')
+
 subplot(2,1,2)
 hold on
-plot(temp_time(temp_bounds(2):temp_bounds(3)),Speed(temp_bounds(2):temp_bounds(3)))
+plot(temp_time(temp_bounds(2):temp_bounds(3)),Speed(temp_bounds(2):temp_bounds(3)),'g')
+plot(fit_lin,'b')
+plot(fit_exp,'k')
+legend({'Experimental Data','Linear Fit','Exponential Fit'})
 ylim([-10 200]);
+ylabel('Spin Down Only')
+hold off
 
- 
 % Divisor = 8
 figure(3)
+title('Spindown using 8 Divisor Encoder')
 divisor = 8;
 Speed = speed_clean(temp_data(:,3),divisor,encoder_count);
 subplot(2,1,1)
 plot(temp_time,Speed);
+
+ylabel('Entire Spin Up/Down')
 ylim([-10 210]);
+temp = [temp_time(temp_bounds(2):temp_bounds(3)),Speed(temp_bounds(2):temp_bounds(3))];
+temp = temp(~any(isnan(temp),2),:);
+fit_lin = fit(temp(:,1),temp(:,2),'poly1');
+fit_exp = fit(temp(:,1),temp(:,2),'exp1');
 
 subplot(2,1,2)
-plot(temp_time(temp_bounds(2):temp_bounds(3)),Speed(temp_bounds(2):temp_bounds(3)))
+hold on
+plot(temp_time(temp_bounds(2):temp_bounds(3)),Speed(temp_bounds(2):temp_bounds(3)),'g')
+plot(fit_lin,'b')
+plot(fit_exp,'k')
+legend({'Experimental Data','Linear Fit','Exponential Fit'})
+ylabel('Spin Down Only')
 ylim([-10 400]);
+hold off
