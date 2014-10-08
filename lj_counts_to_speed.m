@@ -12,7 +12,18 @@ for i=1:size(B,1)-1;
         B(i+1:end,1) = B(i+1:end,1)+bins;
     end
 end
+plot(B)
+pause
+size(B)
+B= 1/(B(1:16e4,1))
+C = zeros(size(B));
+for i = 1:size(C,2);
+    C(i,1) = 1/(B(i,1))
+end
 
+plot(C);
+
+pause
 speed=0;
 %
 %plots = 3;
@@ -31,10 +42,10 @@ x = [0:1:size(counts,1)-1]';
 %figure(1)
 %plot(speed_w)
 %pause
-time = x(9e4:end,1)/fs + 9e4/fs
+time = x(9e4:end,1)/fs + 9e4/fs;
 
-speed_fit = speed_w(9e4:end,1)
-fit_obj = fit(time,speed_fit,'exp1')
+speed_fit = speed_w(9e4:end,1);
+fit_obj = fit(time,speed_fit,'exp1');
 
 close all
 
