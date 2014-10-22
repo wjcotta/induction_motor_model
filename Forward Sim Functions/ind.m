@@ -38,8 +38,9 @@ wr    = statev(5);
 th    = statev(6);
 
 % torque_load_total = torque_load(t) + Bl*wr/P;
-%torque_load = 5*sin(slip*th/2) + Bl*wr/P;
+% torque_load = 5*sin(slip*th/2) + Bl*wr/P;
 torque_load = Bl*wr/P;
+
 iqs = (Lm*lamqr - Lar*lamqs)/D;
 ids = (Lm*lamdr - Lar*lamds)/D;
 iqr = (Lm*lamqs - Las*lamqr)/D;
