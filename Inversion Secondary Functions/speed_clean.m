@@ -66,11 +66,7 @@ else % counts only one column.
     Speed = 2*pi*(48000000*(divisor)./(cpr*(A)));
     mA = medfilt1(Speed,5,1e4);
     indA = find(abs(Speed-mA)>range);
-    %% Debugging
-    plot(Speed)
-    ylim([-10 400])
-    pause
-    %% Debugging
+
     for i = 1:length(indA)
         Speed(indA(i)) = mA(indA(i));
     end

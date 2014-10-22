@@ -16,6 +16,17 @@ else
     data = preprocess_sim_data(filename, fs, l2l_flag, P, encoder_count, mill);
 end
 
+
+x = [0:1:size(data.Iabc,1)-1];
+plot(x,data.Iabc(:,1),'r',x,data.Iabc(:,2),'g',x,data.Iabc(:,3),'b');
+size(x)
+size(data.Iabc)
+%figure(2)
+%plot(data.Vwye)
+pause
+
+
+
 data = find_stable_region(data, l2l_flag, avg_time_window);
 if pulley_ratio == -1;
     load_wr = -1;

@@ -19,8 +19,8 @@ out.filename = filename;
 %% Set calibration constants for the three-phase HP power supply and analyzer.
 % Schantz box configured so all voltage channels measure the same voltage phase, likewise for the current channels.
 
-%Slopes = [0.000935547853831 0.001010673290357 0.001015083089409 0.091020193288373 0.091089882503841 0.090792761167529];
-Slopes= [0.000935547853831 0.001010673290357 0.001015083089409 0.091020193288373 0.091089882503841 0.090792761167529];
+Slopes = [0.000935547853831 0.001015083089409 0.001010673290357 0.091020193288373 0.091089882503841 0.090792761167529];
+%Slopes= [0.000935547853831 0.001010673290357 0.001015083089409 0.091020193288373 0.091089882503841 0.090792761167529];
 
 
 %Slopes = [0.00062334 0.00063414 0.0006251 0.062319 0.05787 0.063953];
@@ -214,19 +214,19 @@ if mill=='light duty';
     Vc = AIN5;
 else
     % Post Safety Modifications
-%     Ia = AIN0;
-%     Ib = -AIN1; % current sensor are on backwards so this is negative
-%     Ic = -AIN2; % current sensor are on backwards so this is negative
-%     Va = AIN3; % These are remapped due to configuration differences in the NILM box.
-%     Vb = AIN4;
-%     Vc = AIN5;
-    % Pre Safety Modifications
-    Ia = AIN1;
-    Ib = AIN0; % These are remapped due to configuration differences in the NILM box.
-    Ic = AIN2;
-    Va = AIN3;
+    Ia = AIN0;
+    Ib = -AIN1; % current sensor are on backwards so this is negative
+    Ic = -AIN2; % current sensor are on backwards so this is negative
+    Va = AIN3; % These are remapped due to configuration differences in the NILM box.
     Vb = AIN4;
     Vc = AIN5;
+%     % Pre Safety Modifications
+%     Ia = AIN1;
+%     Ib = AIN0; % These are remapped due to configuration differences in the NILM box.
+%     Ic = AIN2;
+%     Va = AIN3;
+%     Vb = AIN4;
+%     Vc = AIN5;
 end
 
 %%
@@ -293,7 +293,7 @@ Ids_mean = mean(real(Idq));
 Iqs_mean = mean(imag(Idq));
 
 %%%%%%%%%% DEBUGGING %%%%%%%%%% (changed from - to + pi/4)
-phi_offset = atan2(Ids_mean, Iqs_mean) + pi/4;   % Rotate currents to have same mean positive values.
+phi_offset = atan2(Ids_mean, Iqs_mean) - pi/4;   % Rotate currents to have same mean positive values.
 % phi_offset = atan2(Ids_mean, Iqs_mean);        % Rotate Park Transform to make D-axis have mean zero value.
 
 park_vect_rot = park_vect.*exp(1i*phi_offset);
