@@ -293,7 +293,7 @@ Ids_mean = mean(real(Idq));
 Iqs_mean = mean(imag(Idq));
 
 %%%%%%%%%% DEBUGGING %%%%%%%%%% (changed from - to + pi/4)
-phi_offset = atan2(Ids_mean, Iqs_mean) - pi/4;   % Rotate currents to have same mean positive values.
+phi_offset = atan2(Ids_mean, Iqs_mean) + pi/4;   % Rotate currents to have same mean positive values.
 % phi_offset = atan2(Ids_mean, Iqs_mean);        % Rotate Park Transform to make D-axis have mean zero value.
 
 park_vect_rot = park_vect.*exp(1i*phi_offset);
