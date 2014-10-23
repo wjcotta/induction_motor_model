@@ -286,14 +286,11 @@ park_vect = exp(-1i*phase);
 
 Idq = out.I_clark.*park_vect; % Current output from the Park Transform
 
-%%%%%%%%%% DEBUGGING %%%%%%%%%%
-Idq = complex(-imag(Idq),real(Idq));
-
+Idq = complex(imag(Idq),real(Idq));
 Ids_mean = mean(real(Idq));
 Iqs_mean = mean(imag(Idq));
 
-%%%%%%%%%% DEBUGGING %%%%%%%%%% (changed from - to + pi/4)
-phi_offset = atan2(Ids_mean, Iqs_mean) + pi/4;   % Rotate currents to have same mean positive values.
+phi_offset = atan2(Ids_mean, Iqs_mean) - pi/4;   % Rotate currents to have same mean positive values.
 % phi_offset = atan2(Ids_mean, Iqs_mean);        % Rotate Park Transform to make D-axis have mean zero value.
 
 park_vect_rot = park_vect.*exp(1i*phi_offset);
@@ -316,7 +313,7 @@ if isfield(out, 'Speed')
     Ids_mean = mean(real(Idq_rotor));
     Iqs_mean = mean(imag(Idq_rotor));
     phi_offset = atan2(Ids_mean, Iqs_mean) + pi/4;   % Rotate currents to have same mean positive values.
-    % phi_offset = atan2(Ids_mean, Iqs_mean);        % Rotate Park Transform to make D-axis have zero value.
+    phi_offset = atan2(Ids_mean, Iqs_mean);        % Rotate Park Transform to make D-axis have zero value.
     park_vect_rotor_shift = park_vect_rotor.*exp(1i*phi_offset);
     out.Vdq_rotor = out.V_clark.*park_vect_rotor_shift;
     out.Idq_rotor = out.I_clark.*park_vect_rotor_shift;

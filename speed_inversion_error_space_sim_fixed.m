@@ -251,6 +251,7 @@ xc = ifft(fft(A).*conj(fft(B)));
 % shift = 0;
 B = circshift(B,shift);
 a1 = plot([A B]);
+legend('Estimated','Real')
 
 wr_mean = out.wr;
 dd = mean(real(out.Wr_est))-wr_mean;

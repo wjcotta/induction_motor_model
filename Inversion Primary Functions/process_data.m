@@ -24,7 +24,7 @@ else;
 end
 slip_check(data);
 
-
+load_wr = 60*2*pi
 data = decompose_indmotor_data(data, load_wr);
 
 %data = calc_params_run_sim(data, load_wr, P, tune, useTrueSpeed);
