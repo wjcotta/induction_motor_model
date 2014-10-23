@@ -24,7 +24,15 @@ else;
 end
 slip_check(data);
 
-load_wr = 60*2*pi
+
+%% Using DC Motor
+load_wr = 2*pi*29%*pulley_ratio
+
+
+%% Inversion Functions
+
+load_wr
+
 data = decompose_indmotor_data(data, load_wr);
 
 %data = calc_params_run_sim(data, load_wr, P, tune, useTrueSpeed);
