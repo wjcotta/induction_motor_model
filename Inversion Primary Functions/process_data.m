@@ -29,15 +29,23 @@ slip_check(data);
 
 %% Using DC Motor
 %load_wr = 2*pi*10;%*pulley_ratio
-%% Inversion Functions
-data = decompose_indmotor_data(data, load_wr);
+%% 
 
+%% Inversion Functions
 if scan_flag == false;
+    data = decompose_indmotor_data(data, load_wr);
+    
     %data = calc_params_run_sim(data, load_wr, P, tune, useTrueSpeed);
     data = speed_inversion_error_space_sim_fixed(data, load_wr, P, tune, useTrueSpeed);
     data.Time_verification = [0:1/8000:(size(data.Idq_Verification,1)-1)/8000];
+
 elseif scan_flag == true;
-    scan_
+    load_wr_range = [30,200];
+    d_wr = 10;
+    data = scan_load_wr(pulley_ratio,load_wr_range,d_wr,data,tune)
+    
+    
+    
 %% Estimate torque
 
 Lm = data.Parameters(1,3);

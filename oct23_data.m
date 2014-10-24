@@ -1,5 +1,6 @@
 pulley_ratio = .54154;
-sim_flag = false;
+sim_flag     = false;
+scan_flag    = true;
 %{
 filename = 'oct23_noload';
 data_no_load = process_data(filename, pulley_ratio, sim_flag)
@@ -22,3 +23,5 @@ pause
 
 %}
 
+filename = 'oct23_noload';
+data_no_load = process_data(filename, pulley_ratio, sim_flag, scan_flag)
