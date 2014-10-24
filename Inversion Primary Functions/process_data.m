@@ -1,6 +1,8 @@
-function [data] = process_data(filename, pulley_ratio, sim_flag)
+function [data] = process_data(filename, pulley_ratio, sim_flag,scan_flag)
 %% Input parameters and run processing scripts
-
+if nargin<4;
+    scan_flag=false;
+end
 fs = 8000;                              % sampling rate [Hz]
 l2l_flag = false;                       % PM motor = true, induction = false
 P = 2;                                  % number of pole pairs, 2 for heavy duty
@@ -26,19 +28,16 @@ slip_check(data);
 
 
 %% Using DC Motor
-load_wr = 2*pi*29%*pulley_ratio
-
-
+%load_wr = 2*pi*10;%*pulley_ratio
 %% Inversion Functions
-
-load_wr
-
 data = decompose_indmotor_data(data, load_wr);
 
-%data = calc_params_run_sim(data, load_wr, P, tune, useTrueSpeed);
-data = speed_inversion_error_space_sim_fixed(data, load_wr, P, tune, useTrueSpeed);
-data.Time_verification = [0:1/8000:(size(data.Idq_Verification,1)-1)/8000];
-
+if scan_flag == false;
+    %data = calc_params_run_sim(data, load_wr, P, tune, useTrueSpeed);
+    data = speed_inversion_error_space_sim_fixed(data, load_wr, P, tune, useTrueSpeed);
+    data.Time_verification = [0:1/8000:(size(data.Idq_Verification,1)-1)/8000];
+elseif scan_flag == true;
+    scan_
 %% Estimate torque
 
 Lm = data.Parameters(1,3);

@@ -17,26 +17,44 @@ data_cut = preprocess_motor_data(filename, fs, l2l_flag, P, encoder_count, mill)
 filename = 'oct22_60Hz';
 data_60 = preprocess_motor_data(filename, fs, l2l_flag, P, encoder_count, mill);
 
-filename = 'oct22_29Hz';
+filename = 'oct23_1800_30Hz';
 data_29 = preprocess_motor_data(filename, fs, l2l_flag, P, encoder_count, mill);
 
-filename = 'oct22_10Hz';
-data_10 = preprocess_motor_data(filename, fs, l2l_flag, P, encoder_count, mill);
+filename = 'oct23_660_30Hz';
+data_660 = preprocess_motor_data(filename, fs, l2l_flag, P, encoder_count, mill);
+
+filename = 'oct23_open';
+data_open = preprocess_motor_data(filename, fs, l2l_flag, P, encoder_count, mill);
+
+filename = 'oct23_1800_2_5Hz';
+data_2_5 = preprocess_motor_data(filename, fs, l2l_flag, P, encoder_count, mill);
 
 %% Plot Speeds for comparison
 
-speed_interval = 1000;
+speed_interval = 4000;
 
 figure(1);
 
-subplot(411);
+subplot(611);
 plot(data_cut.Speed(3e5:3e5+speed_interval));
+ylabel('Actual Cut Data')
 
-subplot(412);
+subplot(612);
 plot(data_60.Speed(2e5:2e5+speed_interval));
+ylabel('60 Hz')
 
-subplot(413);
-plot(data_29.Speed(2e5:2e5+speed_interval));
+subplot(613);
+plot(data_29.Speed(2e4:2e4+speed_interval));
+ylabel('29 Hz')
 
-subplot(414);
-plot(data_10.Speed(2e5:2e5+speed_interval));
+subplot(614);
+plot(data_660.Speed(2e4:2e4+speed_interval));
+ylabel('10 Hz')
+
+subplot(615);
+plot(data_open.Speed(8e4:8e4+speed_interval));
+ylabel('Open')
+
+subplot(616)
+plot(data_2_5.Speed(8e4:8e4+speed_interval));
+ylabel('2.5Hz')

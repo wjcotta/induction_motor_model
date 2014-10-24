@@ -7,8 +7,8 @@ filename3 = '22augcut3';
 filename4 = '22augcut5';
 %}
 %filename = '22augcut2';
-filename = 'oct22_29Hz';
-pulley_ratio = 0.54154-0.001 ;    % adjusted for number of flutes
+filename = 'oct22_10Hz';
+pulley_ratio = 0.54154;    % adjusted for number of flutes
 %load_freq =60*2*pi;
 %wr = 186.765;
 %pulley_ratio = wr/load_freq;
