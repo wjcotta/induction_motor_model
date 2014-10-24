@@ -1,19 +1,26 @@
-function out = preprocess_motor_data(filename, fs, l2l_flag, P, encoder_count, mill,divisor_flag,varagin)
+function out = preprocess_motor_data(filename, fs, l2l_flag, P, encoder_count,mill,replicate_current,divisor_flag,varagin)
 
 % This function converts the raw output of the Labjack DAQ device into physical units suitable for calculation, does time-shifting to account for interchannel delay,
 % performs Clark and Park transformations (accounting for variable electric frequency over course of experiment), and produces an estimate of instantaneous electric frequency.
-
-if (nargin < 5)
-    encoder_count = 1800;
-end
-if (nargin < 7)
+if nargin < 8
     divisor_flag = false;
+    
+    if (nargin < 5)
+        encoder_count = 1800;
+        mill='heavy_duty';
+        replicate_current =false;
+    end
 end
+
 
 
 %% Load data
 load(filename)
 out.filename = filename;
+
+if replicate_current == true;
+    out.dc_motor_current = data(:,2);
+end
 % L = length(data);
 
 %% Set calibration constants for the three-phase HP power supply and analyzer.
@@ -47,8 +54,13 @@ Ws = 1600/(fs/2);                   % Stopband edge frequency
 [b, a] = butter(n, Wn);             % Returns filter numberator and denominator coefficients in vectors b and a, respectively.
 
 % Use outputs from butter function to filter the data.
+
 data(:,1) = filtfilt(b,a,data(:,1));
-data(:,2) = filtfilt(b,a,data(:,2));
+%% Replicate current
+if replicate_current == false;
+    data(:,2) = filtfilt(b,a,data(:,2));
+end
+%%
 data(:,3) = filtfilt(b,a,data(:,3));
 data(:,4) = filtfilt(b,a,data(:,4));
 data(:,5) = filtfilt(b,a,data(:,5));
@@ -61,7 +73,11 @@ data(:,6) = filtfilt(b,a,data(:,6));
 % We now have periodic signal vectors in the long data, which will cause less edge effect with fft-based processing later.
 
 AIN0 = data(sI:eI,1);
-AIN1 = data(sI:eI,2);
+%% Replicate current
+if replicate_current == false;
+    AIN1 = data(sI:eI,2);
+end
+%%
 AIN2 = data(sI:eI,3);
 AIN3 = data(sI:eI,4);   % Vab if line to line measurement
 AIN4 = data(sI:eI,5);   % Vbc if line to line measurement
@@ -81,7 +97,7 @@ if (size(data,2)==7) | (size(data,2)==8)
     Counts = data(sI:eI,7);
     divisor = 8;
     if divisor_flag ~= false;
-        divisor = divisor_flag
+        divisor = divisor_flag;
     end
     Speed = speed_clean(Counts,divisor,encoder_count);
     ms = mean(Speed/2/pi);
@@ -133,21 +149,36 @@ Volts_LJ = @(Bits) (Bits/65536)*(5.07+5.18)-5.18;
 I_measured = @(Bits) 1000*(Volts_LJ(Bits)/155);
 % The resistance is set at 155 ohms using the switches in the nilm box (all resistors turned on).
 % 1000 is the conversion for the LA-55-P current transducer from measure current to output current.
+%% Replicate current
+if replicate_current == false;
+    currents = [AIN0, AIN1, AIN2];
 
-currents = [AIN0, AIN1, AIN2];
+    for i=1:3;
+        for k=1:length(currents);
+            temp(k,i)=I_measured(currents(k,i));
+        end
+    end
+else
+    currents = [AIN0,AIN2];
 
-for i=1:3;
-    for k=1:length(currents);
-        temp(k,i)=I_measured(currents(k,i));
+    for i=1:2;
+        for k=1:length(currents);
+            temp(k,i)=I_measured(currents(k,i));
+        end
     end
 end
+%% Replicate current
+if replicate_current == false;
+    AIN0 = temp(:,1) - mean(temp(:,1));
+    AIN1 = temp(:,2) - mean(temp(:,2));
+    AIN2 = temp(:,3) - mean(temp(:,3));
 
-AIN0 = temp(:,1) - mean(temp(:,1));
-AIN1 = temp(:,2) - mean(temp(:,2));
-AIN2 = temp(:,3) - mean(temp(:,3));
+    clear temp currents
+else;
+    AIN0 = temp(:,1) - mean(temp(:,1));
+    AIN2 = temp(:,2) - mean(temp(:,2));
 
-clear temp currents
-
+    clear temp currents
 %% Use Slopes for Voltage
 
 AIN3 = (AIN3 - mean(AIN3))*Slopes(4);
@@ -163,13 +194,23 @@ t_shift = @(a,t0,fs) ifft(fft(a).*exp(-1i*2*pi*t0*(ifftshift((0:length(a)-1)' -c
 
 theta_shift = @(a,theta) ifft(fft(a).*exp(-1i*theta*(ifftshift((0:length(a)-1)' -ceil((length(a)-1)/2)))));
 
-AIN0 = t_shift(AIN0,0*dt,fs);
-AIN1 = t_shift(AIN1,1*dt,fs);
-AIN2 = t_shift(AIN2,2*dt,fs);
-AIN3 = t_shift(AIN3,3*dt,fs);
-AIN4 = t_shift(AIN4,4*dt,fs);
-AIN5 = t_shift(AIN5,5*dt,fs);
 
+%% Replicate current
+if replicate_current == false;
+    AIN0 = t_shift(AIN0,0*dt,fs);
+    AIN1 = t_shift(AIN1,1*dt,fs);
+    AIN2 = t_shift(AIN2,2*dt,fs);
+    AIN3 = t_shift(AIN3,3*dt,fs);
+    AIN4 = t_shift(AIN4,4*dt,fs);
+    AIN5 = t_shift(AIN5,5*dt,fs);
+else;
+    AIN0 = t_shift(AIN0,0*dt,fs);
+    AIN2 = t_shift(AIN2,2*dt,fs);
+    AIN3 = t_shift(AIN3,3*dt,fs);
+    AIN4 = t_shift(AIN4,4*dt,fs);
+    AIN5 = t_shift(AIN5,5*dt,fs);
+end
+%%
 if exist('Speed','var') % checks if variables are defined
     Speed = t_shift(Speed,dtS,fs);
 end
@@ -213,20 +254,29 @@ if mill=='light duty';
     Vb = AIN3;
     Vc = AIN5;
 else
-    % Post Safety Modifications
-    Ia = AIN0;
-    Ib = -AIN1; % current sensor are on backwards so this is negative
-    Ic = -AIN2; % current sensor are on backwards so this is negative
-    Va = AIN3; % These are remapped due to configuration differences in the NILM box.
-    Vb = AIN4;
-    Vc = AIN5;
-%     % Pre Safety Modifications
-%     Ia = AIN1;
-%     Ib = AIN0; % These are remapped due to configuration differences in the NILM box.
-%     Ic = AIN2;
-%     Va = AIN3;
-%     Vb = AIN4;
-%     Vc = AIN5;
+    if replicate_current == false;
+        % Post Safety Modifications
+        Ia = AIN0;
+        Ib = -AIN1; % current sensor are on backwards so this is negative
+        Ic = -AIN2; % current sensor are on backwards so this is negative
+        Va = AIN3; % These are remapped due to configuration differences in the NILM box.
+        Vb = AIN4;
+        Vc = AIN5;
+    %     % Pre Safety Modifications
+    %     Ia = AIN1;
+    %     Ib = AIN0; % These are remapped due to configuration differences in the NILM box.
+    %     Ic = AIN2;
+    %     Va = AIN3;
+    %     Vb = AIN4;
+    %     Vc = AIN5;
+    else;
+        Ia = AIN0;
+        Ib = -(AIN0-AIN2);
+        Ic = -AIN2; % current sensor are on backwards so this is negative
+        Va = AIN3; % These are remapped due to configuration differences in the NILM box.
+        Vb = AIN4;
+        Vc = AIN5;
+    end
 end
 
 %%

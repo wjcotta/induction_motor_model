@@ -11,9 +11,12 @@ mill = 'heavy duty';                    % 'heavy duty' or 'lighty duty'
 avg_time_window = 20;                   % data time window
 tune = 1;                               % 0.1 - 100
 useTrueSpeed = false;                   % PM motor = true, induction = false
+replicate_current=true;
+
+
 
 if sim_flag == false
-    data = preprocess_motor_data(filename, fs, l2l_flag, P, encoder_count, mill);
+    data = preprocess_motor_data(filename, fs, l2l_flag, P, encoder_count, mill,replicate_current);
 else
     data = preprocess_sim_data(filename, fs, l2l_flag, P, encoder_count, mill);
 end
@@ -33,18 +36,19 @@ slip_check(data);
 
 %% Inversion Functions
 if scan_flag == false;
-    data = decompose_indmotor_data(data, load_wr);
+    data = Decompose_Three_Phase_Motor_Data(data,load_wr,data.indl_schantz)
     
     %data = calc_params_run_sim(data, load_wr, P, tune, useTrueSpeed);
     data = speed_inversion_error_space_sim_fixed(data, load_wr, P, tune, useTrueSpeed);
     data.Time_verification = [0:1/8000:(size(data.Idq_Verification,1)-1)/8000];
 
 elseif scan_flag == true;
-    load_wr_range = [30,200];
-    d_wr = 10;
+    load_wr_range = [10,400];
+    % Last frequency test 31.71 rad/s
+    d_wr = 0.01;
     data = scan_load_wr(pulley_ratio,load_wr_range,d_wr,data,tune)
-    
-    
+    return
+end 
     
 %% Estimate torque
 

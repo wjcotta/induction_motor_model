@@ -239,6 +239,7 @@ h = figure;
 set(h,'Outerposition',[100,100,1200,700])
 
 uicontrol('Style', 'text', 'String', data.filename, 'Units','normalized', 'Position', [0.45 0.975 0.15 0.025]); 
+%% Plotting Section
 
 subplot(3,2,1);
 A = real(out.Wr_est)/2/pi;

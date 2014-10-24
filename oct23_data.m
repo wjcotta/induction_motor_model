@@ -23,5 +23,5 @@ pause
 
 %}
 
-filename = 'oct23_noload';
-data_no_load = process_data(filename, pulley_ratio, sim_flag, scan_flag)
+filename = 'oct23_alum_damaged';
+data = process_data(filename, pulley_ratio, sim_flag, scan_flag);
