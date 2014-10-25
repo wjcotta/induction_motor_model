@@ -4,7 +4,9 @@ function out = preprocess_motor_data(filename, fs, l2l_flag, P, encoder_count,mi
 % performs Clark and Park transformations (accounting for variable electric frequency over course of experiment), and produces an estimate of instantaneous electric frequency.
 if nargin < 8
     divisor_flag = false;
-    
+    if nargin < 7
+        replicate_current = false;
+    end
     if (nargin < 5)
         encoder_count = 1800;
         mill='heavy_duty';
@@ -17,10 +19,6 @@ end
 %% Load data
 load(filename)
 out.filename = filename;
-
-if replicate_current == true;
-    out.dc_motor_current = data(:,2);
-end
 % L = length(data);
 
 %% Set calibration constants for the three-phase HP power supply and analyzer.
@@ -56,11 +54,7 @@ Ws = 1600/(fs/2);                   % Stopband edge frequency
 % Use outputs from butter function to filter the data.
 
 data(:,1) = filtfilt(b,a,data(:,1));
-%% Replicate current
-if replicate_current == false;
-    data(:,2) = filtfilt(b,a,data(:,2));
-end
-%%
+data(:,2) = filtfilt(b,a,data(:,2));
 data(:,3) = filtfilt(b,a,data(:,3));
 data(:,4) = filtfilt(b,a,data(:,4));
 data(:,5) = filtfilt(b,a,data(:,5));
@@ -73,15 +67,18 @@ data(:,6) = filtfilt(b,a,data(:,6));
 % We now have periodic signal vectors in the long data, which will cause less edge effect with fft-based processing later.
 
 AIN0 = data(sI:eI,1);
-%% Replicate current
-if replicate_current == false;
-    AIN1 = data(sI:eI,2);
-end
-%%
+AIN1 = data(sI:eI,2);
 AIN2 = data(sI:eI,3);
 AIN3 = data(sI:eI,4);   % Vab if line to line measurement
 AIN4 = data(sI:eI,5);   % Vbc if line to line measurement
 AIN5 = data(sI:eI,6);   % Vca if line to line measurement
+
+%%
+if replicate_current == true;
+    dc_motor_current = AIN1;
+end
+
+
 
 % AIN3 generally always a voltage measurement.
 
@@ -179,6 +176,7 @@ else;
     AIN2 = temp(:,2) - mean(temp(:,2));
 
     clear temp currents
+end
 %% Use Slopes for Voltage
 
 AIN3 = (AIN3 - mean(AIN3))*Slopes(4);
@@ -214,7 +212,11 @@ end
 if exist('Speed','var') % checks if variables are defined
     Speed = t_shift(Speed,dtS,fs);
 end
-
+if replicate_current == true;
+    dc_motor_current = t_shift(dc_motor_current,dtS,fs);
+    out.dc_motor_current = real(dc_motor_current);
+end
+    
 %% Important things for PM Motors only
 %{
 if l2l_flag %inverter connected wiring

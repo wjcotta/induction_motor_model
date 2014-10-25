@@ -9,15 +9,16 @@ end
 
 P=data.P;
 load_wr = data.wr*pulley_ratio;
-wr_candidates =  [load_wr_range(1) : d_wr : load_wr_range(2)] 
+wr_candidates =  [load_wr_range(1) : d_wr : load_wr_range(2)] ;
 
 for i=1:length(wr_candidates);
     load_wr_temp = wr_candidates(i);
     data = decompose_indmotor_data(data, load_wr_temp);
     data = speed_inversion_error_space_sim_fixed( data, load_wr_temp, P, tune, useTrueSpeed);
-    load_wr_temp
-    if (mean(real(data.Idq_Verification)) > 4) & (mean(real(data.Idq_Verification)) <4.2);
-        pause
+    if max(abs(real(data.Idq_Verification)-real(data.Idq_sim_compare))) < 0.1;
+        load('matches');
+        matches = [matches, load_wr_temp];
+        save('matches','matches');
     end
     close all
 end

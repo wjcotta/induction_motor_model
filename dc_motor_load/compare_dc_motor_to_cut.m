@@ -11,8 +11,9 @@ useTrueSpeed = false;                   % PM motor = true, induction = false
 
 
 %% Preprocess data 
-filename = '22augcut2';
-data_cut = preprocess_motor_data(filename, fs, l2l_flag, P, encoder_count, mill);
+filename = 'oct24_46Hz';
+replicate_current = true;
+data_46Hz = preprocess_motor_data(filename, fs, l2l_flag, P, encoder_count, mill,replicate_current);
 
 filename = 'oct22_60Hz';
 data_60 = preprocess_motor_data(filename, fs, l2l_flag, P, encoder_count, mill);
@@ -29,15 +30,16 @@ data_open = preprocess_motor_data(filename, fs, l2l_flag, P, encoder_count, mill
 filename = 'oct23_1800_2_5Hz';
 data_2_5 = preprocess_motor_data(filename, fs, l2l_flag, P, encoder_count, mill);
 
+
 %% Plot Speeds for comparison
 
-speed_interval = 4000;
+speed_interval = 200;
 
 figure(1);
 
 subplot(611);
-plot(data_cut.Speed(3e5:3e5+speed_interval));
-ylabel('Actual Cut Data')
+plot(data_46Hz.Speed(1.5e5:1.5e5+speed_interval));
+ylabel('46 Hz')
 
 subplot(612);
 plot(data_60.Speed(2e5:2e5+speed_interval));

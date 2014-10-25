@@ -246,7 +246,7 @@ A = real(out.Wr_est)/2/pi;
 B = Speed_long(1e4:1e4+N-1)/2/pi;
 
 out.Speed_verification = B;
-
+out.Idq_sim_compare = Idq_sim_compare;
 xc = ifft(fft(A).*conj(fft(B)));
 [junk, shift] = max(xc);
 % shift = 0;

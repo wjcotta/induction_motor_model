@@ -3,6 +3,11 @@ function [data] = process_data(filename, pulley_ratio, sim_flag,scan_flag)
 if nargin<4;
     scan_flag=false;
 end
+if scan_flag == true;
+    matches=[];
+    save('matches','matches');
+    clear matches
+end
 fs = 8000;                              % sampling rate [Hz]
 l2l_flag = false;                       % PM motor = true, induction = false
 P = 2;                                  % number of pole pairs, 2 for heavy duty
@@ -36,7 +41,7 @@ slip_check(data);
 
 %% Inversion Functions
 if scan_flag == false;
-    data = Decompose_Three_Phase_Motor_Data(data,load_wr,data.indl_schantz)
+    data = Decompose_Three_Phase_Motor_Data(data,load_wr,data.indl_schantz);
     
     %data = calc_params_run_sim(data, load_wr, P, tune, useTrueSpeed);
     data = speed_inversion_error_space_sim_fixed(data, load_wr, P, tune, useTrueSpeed);
@@ -46,7 +51,7 @@ elseif scan_flag == true;
     load_wr_range = [10,400];
     % Last frequency test 31.71 rad/s
     d_wr = 0.01;
-    data = scan_load_wr(pulley_ratio,load_wr_range,d_wr,data,tune)
+    data = scan_load_wr(pulley_ratio,load_wr_range,d_wr,data,tune);
     return
 end 
     
