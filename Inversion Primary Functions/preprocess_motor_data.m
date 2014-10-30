@@ -212,6 +212,7 @@ end
 if exist('Speed','var') % checks if variables are defined
     Speed = t_shift(Speed,dtS,fs);
 end
+%% Replicate current
 if replicate_current == true;
     dc_motor_current = t_shift(dc_motor_current,dtS,fs);
     out.dc_motor_current = real(dc_motor_current);
